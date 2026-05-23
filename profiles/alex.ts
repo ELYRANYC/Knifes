@@ -3,7 +3,7 @@ import type { ProfileConfig } from '@/lib/types';
 export const alex: ProfileConfig = {
   username: 'alex',
   displayName: 'alex',
-  avatar: 'https://api.dicebear.com/9.x/bottts-neutral/svg?seed=alex&backgroundColor=00ff66',
+  avatar: 'https://api.dicebear.com/9.x/bottts-neutral/svg?seed=alex&backgroundColor=1a0000',
   description: ['sysadmin by day', 'ctf player by night', 'i make computers cry'],
   location: 'tor exit node',
   pronouns: 'he/him',
@@ -12,7 +12,7 @@ export const alex: ProfileConfig = {
   layout: 'modern',
   layoutSettings: {
     avatarRadius: 14,
-    borderColor: 'rgba(0,255,102,0.4)',
+    borderColor: 'rgba(255,0,51,0.4)',
     borderWidth: 1,
     borderRadius: 18,
   },
@@ -27,11 +27,11 @@ export const alex: ProfileConfig = {
   profileEffect: 'rgb-glow',
 
   colors: {
-    accent: '#00ff66',
+    accent: '#ff0033',
     background: '#000000',
-    text: '#d8ffe6',
-    icon: '#00ff66',
-    secondary: 'rgba(0,255,102,0.7)',
+    text: '#ff3355',
+    icon: '#ff3355',
+    secondary: 'rgba(255,51,85,0.7)',
   },
   monochromeIcons: true,
 
@@ -57,7 +57,7 @@ export const alex: ProfileConfig = {
       title: 'cyberwave loop',
       artist: 'public domain',
       url: 'https://archive.org/download/cyberpunk-loop/cyberpunk-loop.mp3',
-      cover: 'https://api.dicebear.com/9.x/shapes/svg?seed=alex-audio&backgroundColor=00ff66,000000',
+      cover: 'https://api.dicebear.com/9.x/shapes/svg?seed=alex-audio&backgroundColor=ff0033,000000',
     },
   ],
   audioAutoplay: true,
@@ -78,7 +78,7 @@ export const alex: ProfileConfig = {
 
   boxOpacity: 0.62,
   boxBlur: 16,
-  glow: { enabled: true, color: '#00ff66', intensity: 1.4 },
+  glow: { enabled: true, color: '#ff0033', intensity: 1.4 },
 
   discordId: '94490510688792576',
   showDiscordPresence: true,
@@ -87,7 +87,7 @@ export const alex: ProfileConfig = {
   meta: {
     title: 'alex // knives.lol',
     description: '> access granted',
-    themeColor: '#00ff66',
+    themeColor: '#ff0033',
   },
 
   entryScreen: {

@@ -72,8 +72,8 @@ const ICON_REGISTRY: Record<string, IconMeta> = {
 };
 
 const PRETTY_LABELS: Record<string, string> = {
-  twitter: 'twitter / x',
-  x: 'twitter / x',
+  twitter: 'twitter',
+  x: 'x',
   applemusic: 'apple music',
   buymeacoffee: 'buy me a coffee',
   cashapp: 'cash app',
@@ -150,10 +150,9 @@ export default function LinksGrid({
   if (!visible.length) return null;
   const rgb = hexToRgb(accentColor);
 
-  const justify =
-    alignment === 'center' ? 'justify-center' : alignment === 'right' ? 'justify-end' : 'justify-start';
-
   if (variant === 'icon-only') {
+    const justify =
+      alignment === 'center' ? 'justify-center' : alignment === 'right' ? 'justify-end' : 'justify-start';
     return (
       <div className={cn('flex flex-wrap gap-2', justify)}>
         {visible.map((link, i) => (
@@ -170,7 +169,6 @@ export default function LinksGrid({
             style={{
               background: 'rgba(255,255,255,0.04)',
               border: `1px solid rgba(${rgb}, 0.18)`,
-              boxShadow: `0 0 0 0 rgba(${rgb}, 0)`,
             }}
             title={getLinkLabel(link.platform, link.label)}
             aria-label={getLinkLabel(link.platform, link.label)}
@@ -182,8 +180,19 @@ export default function LinksGrid({
     );
   }
 
+  // Card variant — horizontal grid.
+  // ≤4 links: 2 cols at every breakpoint (cards stay roomy).
+  // >4 links: 2 cols mobile, 3 cols ≥768px (md).
+  const gridClass =
+    visible.length <= 4
+      ? 'grid grid-cols-2 gap-2.5 w-full'
+      : 'grid grid-cols-2 md:grid-cols-3 gap-2.5 w-full';
+
+  const innerJustify =
+    alignment === 'center' ? 'justify-center text-center' : alignment === 'right' ? 'flex-row-reverse' : '';
+
   return (
-    <div className={cn('flex flex-col gap-2 w-full')}>
+    <div className={gridClass}>
       {visible.map((link, i) => (
         <motion.a
           key={`${link.platform}-${i}`}
@@ -193,30 +202,27 @@ export default function LinksGrid({
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 + i * 0.05, duration: 0.3 }}
-          className={cn(
-            'link-card group',
-            alignment === 'center' && 'justify-center',
-            alignment === 'right' && 'flex-row-reverse',
-          )}
+          className={cn('link-card group', innerJustify)}
+          title={`${getLinkLabel(link.platform, link.label)} · ${getUrlPreview(link.url)}`}
           style={{
             ['--accent-rgb' as string]: rgb,
+            padding: '10px 12px',
+            gap: 10,
+            minHeight: 56,
           }}
         >
           <span
             className="flex-shrink-0 inline-flex items-center justify-center"
             style={{ color: iconColor }}
           >
-            <PlatformIcon platform={link.platform} color={iconColor} monochrome={monochrome} size={18} />
+            <PlatformIcon platform={link.platform} color={iconColor} monochrome={monochrome} size={17} />
           </span>
-          <span className="flex-1 min-w-0 flex flex-col">
-            <span className="font-medium text-[13px] leading-tight">
-              {getLinkLabel(link.platform, link.label)}
-            </span>
-            <span className="text-[10px] truncate opacity-50">{getUrlPreview(link.url)}</span>
+          <span className="flex-1 min-w-0 font-medium text-[13px] leading-tight truncate">
+            {getLinkLabel(link.platform, link.label)}
           </span>
           <ExternalLink
-            size={13}
-            className="opacity-0 group-hover:opacity-60 transition-opacity"
+            size={12}
+            className="flex-shrink-0 opacity-0 group-hover:opacity-60 transition-opacity"
             style={{ color: accentColor }}
           />
         </motion.a>

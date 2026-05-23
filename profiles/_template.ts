@@ -62,14 +62,14 @@ export const template: ProfileConfig = {
     // 'image'   — image URL (value = url)
     // 'video'   — looping muted video (value = url, .mp4/.webm)
     type: 'solid',
-    value: '#0a0a0f',
+    value: '#0a0000',
     blur: 0, // px, 0-32
     opacity: 1, // 0-1
   },
 
   // For gradient backgrounds. Overrides `background.value` if set.
   gradient: undefined,
-  // example: { from: '#1a0d2e', to: '#3d1a4a', angle: 180 }
+  // example: { from: '#1a0000', to: '#3d0a14', angle: 180 }
 
   // Animated canvas effect rendered over the background:
   //   'none' | 'snow' | 'rain' | 'particles' | 'matrix' | 'stars' | 'bubbles' | 'fireflies'
@@ -89,10 +89,10 @@ export const template: ProfileConfig = {
   // ─────── COLORS (required) ─────────────────────────────────────────────────
 
   colors: {
-    accent: '#00ff66',         // Drives glows, badges, link hover, etc.
-    background: '#0a0a0f',     // Fallback when no bg image
+    accent: '#ff0033',         // Drives glows, badges, link hover, etc.
+    background: '#0a0000',     // Fallback when no bg image
     text: '#f0f0f5',           // Primary text
-    icon: '#00ff66',           // Link icons (overridden if monochromeIcons=false and platform has brand color)
+    icon: '#ff0033',           // Link icons (overridden if monochromeIcons=false and platform has brand color)
     secondary: 'rgba(240,240,245,0.7)', // Description / muted text
   },
 
@@ -180,7 +180,7 @@ export const template: ProfileConfig = {
 
   glow: {
     enabled: true,
-    color: '#00ff66', // Usually matches accent
+    color: '#ff0033', // Usually matches accent
     intensity: 1, // 0-2 multiplier
   },
 

@@ -11,27 +11,26 @@ const features = [
     icon: Sparkles,
     title: 'canvas effects',
     body: 'matrix · particles · fireflies · stars · snow · rain · bubbles. real 60fps canvas, not CSS fakes.',
-    color: '#00ff66',
   },
   {
     icon: Music,
     title: 'audio + entry',
     body: 'click-to-enter screen unlocks autoplay. compact player with marquee, volume, multi-track.',
-    color: '#ff3d8a',
   },
   {
     icon: MousePointer2,
     title: 'cursor magic',
     body: 'trails · glow · sparkles · hearts. theme-aware and reduced-motion safe.',
-    color: '#00d4ff',
   },
   {
     icon: Github,
     title: 'config-first',
     body: 'every profile is one typescript file. fully typed. swap layouts in one line.',
-    color: '#9b59ff',
   },
 ];
+
+const ACCENT = '#ff0033';
+const ACCENT_BRIGHT = '#ff1f4d';
 
 export default function Home() {
   const profiles = useMemo(() => listProfiles(), []);
@@ -50,7 +49,7 @@ export default function Home() {
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(circle at 20% 10%, rgba(0,255,102,0.08) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgba(155,89,255,0.08) 0%, transparent 45%), radial-gradient(circle at 50% 100%, rgba(0,212,255,0.06) 0%, transparent 50%)',
+              'radial-gradient(circle at 20% 10%, rgba(255,0,51,0.12) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgba(255,0,51,0.06) 0%, transparent 45%), radial-gradient(circle at 50% 100%, rgba(139,0,0,0.08) 0%, transparent 50%)',
           }}
         />
         <div
@@ -64,9 +63,9 @@ export default function Home() {
           }}
         />
         <div
-          className="absolute w-[400px] h-[400px] rounded-full opacity-20 transition-transform duration-700 ease-out blur-3xl pointer-events-none"
+          className="absolute w-[400px] h-[400px] rounded-full opacity-25 transition-transform duration-700 ease-out blur-3xl pointer-events-none"
           style={{
-            background: 'radial-gradient(circle, #00ff66 0%, transparent 70%)',
+            background: `radial-gradient(circle, ${ACCENT} 0%, transparent 70%)`,
             left: mouse.x - 200,
             top: mouse.y - 200,
           }}
@@ -80,7 +79,16 @@ export default function Home() {
             href="https://github.com"
             target="_blank"
             rel="noreferrer"
-            className="text-[12px] px-3 py-1.5 rounded-full border border-white/10 text-white/60 hover:text-white hover:border-white/30 transition-colors"
+            className="text-[12px] px-3 py-1.5 rounded-full border border-white/10 text-white/60 hover:text-white transition-colors"
+            style={{
+              borderColor: 'rgba(255,0,51,0.18)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(255,0,51,0.5)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'rgba(255,0,51,0.18)';
+            }}
           >
             github
           </a>
@@ -88,10 +96,10 @@ export default function Home() {
             href="/alex"
             className="text-[12px] px-3 py-1.5 rounded-full font-medium transition-all"
             style={{
-              background: 'rgba(0,255,102,0.16)',
-              color: '#00ff66',
-              border: '1px solid rgba(0,255,102,0.35)',
-              boxShadow: '0 0 14px rgba(0,255,102,0.22)',
+              background: 'rgba(255,0,51,0.16)',
+              color: ACCENT_BRIGHT,
+              border: '1px solid rgba(255,0,51,0.4)',
+              boxShadow: '0 0 14px rgba(255,0,51,0.25)',
             }}
           >
             try a demo →
@@ -106,14 +114,15 @@ export default function Home() {
           transition={{ duration: 0.4 }}
           className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] uppercase tracking-wider mb-6"
           style={{
-            background: 'rgba(255,255,255,0.04)',
-            border: '1px solid rgba(255,255,255,0.1)',
-            color: 'rgba(240,240,245,0.7)',
+            background: 'rgba(255,0,51,0.08)',
+            border: '1px solid rgba(255,0,51,0.32)',
+            color: ACCENT_BRIGHT,
+            boxShadow: '0 0 14px rgba(255,0,51,0.15)',
           }}
         >
           <span
             className="w-1.5 h-1.5 rounded-full"
-            style={{ background: '#00ff66', boxShadow: '0 0 8px #00ff66' }}
+            style={{ background: ACCENT, boxShadow: `0 0 8px ${ACCENT}` }}
           />
           phase 1 · config-driven profiles
         </motion.div>
@@ -128,9 +137,10 @@ export default function Home() {
           <span
             className="bg-clip-text text-transparent"
             style={{
-              backgroundImage: 'linear-gradient(90deg, #00ff66, #00d4ff, #9b59ff, #ff3d8a)',
+              backgroundImage: `linear-gradient(90deg, ${ACCENT}, #ff6680, ${ACCENT})`,
               backgroundSize: '300% 100%',
               animation: 'gradientShift 6s ease infinite',
+              filter: 'drop-shadow(0 0 24px rgba(255,0,51,0.4))',
             }}
           >
             but sharper.
@@ -158,9 +168,9 @@ export default function Home() {
             href="/alex"
             className="inline-flex items-center gap-2 px-5 py-3 rounded-full font-medium transition-all group"
             style={{
-              background: '#00ff66',
-              color: '#000',
-              boxShadow: '0 0 18px rgba(0,255,102,0.5), 0 0 36px rgba(0,255,102,0.25)',
+              background: ACCENT,
+              color: '#fff',
+              boxShadow: '0 0 18px rgba(255,0,51,0.6), 0 0 36px rgba(255,0,51,0.32)',
             }}
           >
             see a profile <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
@@ -185,15 +195,16 @@ export default function Home() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.35 + i * 0.08, duration: 0.4 }}
-                className="glass p-4 hover:bg-white/[0.06] transition-colors"
-                style={{ borderColor: 'rgba(255,255,255,0.08)' }}
+                className="glass p-4 transition-colors"
+                style={{ borderColor: 'rgba(255,0,51,0.12)' }}
               >
                 <div
                   className="w-9 h-9 rounded-xl flex items-center justify-center mb-3"
                   style={{
-                    background: `${f.color}1f`,
-                    color: f.color,
-                    boxShadow: `0 0 14px ${f.color}33`,
+                    background: 'rgba(255,0,51,0.14)',
+                    color: ACCENT_BRIGHT,
+                    border: '1px solid rgba(255,0,51,0.3)',
+                    boxShadow: '0 0 14px rgba(255,0,51,0.28)',
                   }}
                 >
                   <Icon size={16} />
@@ -215,7 +226,9 @@ export default function Home() {
           className="mb-6 flex items-end justify-between"
         >
           <div>
-            <div className="text-[11px] uppercase tracking-wider text-white/45">profile directory</div>
+            <div className="text-[11px] uppercase tracking-wider" style={{ color: 'rgba(255,0,51,0.7)' }}>
+              profile directory
+            </div>
             <h2 className="text-2xl sm:text-3xl font-bold mt-1">four personas, four layouts</h2>
           </div>
           <div className="text-[12px] text-white/45 hidden sm:block">
@@ -237,7 +250,7 @@ export default function Home() {
                   href={`/${p.username}`}
                   className="block glass p-4 sm:p-5 hover:scale-[1.01] transition-transform"
                   style={{
-                    borderColor: `${p.colors.accent}33`,
+                    borderColor: `${p.colors.accent}40`,
                     boxShadow: `0 0 0 1px ${p.colors.accent}1a, 0 12px 30px rgba(0,0,0,0.4)`,
                   }}
                 >
@@ -248,7 +261,7 @@ export default function Home() {
                       className="w-14 h-14 rounded-xl object-cover"
                       style={{
                         border: `2px solid ${p.colors.accent}`,
-                        boxShadow: `0 0 12px ${p.colors.accent}55`,
+                        boxShadow: `0 0 12px ${p.colors.accent}66`,
                       }}
                     />
                     <div className="flex-1 min-w-0">
@@ -259,9 +272,9 @@ export default function Home() {
                         <span
                           className="text-[10px] px-1.5 py-0.5 rounded-full uppercase tracking-wider"
                           style={{
-                            background: `${p.colors.accent}1f`,
-                            color: p.colors.accent,
-                            border: `1px solid ${p.colors.accent}44`,
+                            background: `${ACCENT}1f`,
+                            color: ACCENT_BRIGHT,
+                            border: `1px solid ${ACCENT}55`,
                           }}
                         >
                           {p.layout}
@@ -270,19 +283,34 @@ export default function Home() {
                       <div className="text-[12px] text-white/55 truncate mt-0.5">
                         {Array.isArray(p.description) ? (p.description[0] ?? '') : p.description}
                       </div>
-                      <div className="flex items-center gap-2 mt-2 text-[10px] text-white/40">
+                      <div className="flex items-center gap-2 mt-2 text-[10px]" style={{ color: 'rgba(255,0,51,0.7)' }}>
                         {p.backgroundEffect && p.backgroundEffect !== 'none' && (
-                          <span className="px-1.5 py-0.5 rounded bg-white/5">{p.backgroundEffect}</span>
+                          <span
+                            className="px-1.5 py-0.5 rounded"
+                            style={{ background: 'rgba(255,0,51,0.1)', border: '1px solid rgba(255,0,51,0.22)' }}
+                          >
+                            {p.backgroundEffect}
+                          </span>
                         )}
                         {p.cursorEffect && p.cursorEffect !== 'none' && (
-                          <span className="px-1.5 py-0.5 rounded bg-white/5">{p.cursorEffect} cursor</span>
+                          <span
+                            className="px-1.5 py-0.5 rounded"
+                            style={{ background: 'rgba(255,0,51,0.1)', border: '1px solid rgba(255,0,51,0.22)' }}
+                          >
+                            {p.cursorEffect} cursor
+                          </span>
                         )}
                         {p.audio && p.audio.length > 0 && (
-                          <span className="px-1.5 py-0.5 rounded bg-white/5">audio</span>
+                          <span
+                            className="px-1.5 py-0.5 rounded"
+                            style={{ background: 'rgba(255,0,51,0.1)', border: '1px solid rgba(255,0,51,0.22)' }}
+                          >
+                            audio
+                          </span>
                         )}
                       </div>
                     </div>
-                    <ArrowRight size={16} className="text-white/40" />
+                    <ArrowRight size={16} style={{ color: 'rgba(255,0,51,0.5)' }} />
                   </div>
                 </Link>
               </motion.div>
@@ -294,7 +322,16 @@ export default function Home() {
       <footer className="relative z-10 max-w-5xl mx-auto px-6 py-8 flex items-center justify-between text-[12px] text-white/40 border-t border-white/5">
         <div className="flex items-center gap-2">
           <Logo small />
-          <span>· phase 1 of 3</span>
+          <span
+            className="px-1.5 py-0.5 rounded ml-1"
+            style={{
+              background: 'rgba(255,0,51,0.1)',
+              color: ACCENT_BRIGHT,
+              border: '1px solid rgba(255,0,51,0.25)',
+            }}
+          >
+            phase 1 of 3
+          </span>
         </div>
         <div>auth + dashboard + image host coming in phase 2 & 3</div>
       </footer>
@@ -310,10 +347,12 @@ function Logo({ small }: { small?: boolean }) {
         style={{
           fontWeight: 700,
           letterSpacing: '-0.02em',
+          color: '#fff',
+          textShadow: '0 0 18px rgba(255,0,51,0.35)',
         }}
       >
         knives
-        <span style={{ color: '#00ff66', textShadow: '0 0 10px #00ff66' }}>.lol</span>
+        <span style={{ color: ACCENT, textShadow: `0 0 12px ${ACCENT}` }}>.lol</span>
       </span>
     </Link>
   );

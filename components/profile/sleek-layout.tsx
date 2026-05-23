@@ -19,6 +19,10 @@ const STATUS_COLORS: Record<string, string> = {
   offline: '#80848e',
 };
 
+const AVATAR_SIZE = 92;
+const AVATAR_BORDER = 4;
+const BANNER_HEIGHT = 140;
+
 export default function SleekLayout({ config }: { config: ProfileConfig }) {
   const { colors } = config;
   const rgb = hexToRgb(colors.accent);
@@ -37,13 +41,21 @@ export default function SleekLayout({ config }: { config: ProfileConfig }) {
         }?size=256`
       : config.avatar;
 
-  const effectClass = config.profileEffect === 'rgb-glow'
-    ? 'effect-rgb-glow'
-    : config.profileEffect === 'pulse'
-    ? 'effect-pulse'
-    : config.profileEffect === 'shake'
-    ? 'effect-shake'
-    : '';
+  const effectClass =
+    config.profileEffect === 'rgb-glow'
+      ? 'effect-rgb-glow'
+      : config.profileEffect === 'pulse'
+        ? 'effect-pulse'
+        : config.profileEffect === 'shake'
+          ? 'effect-shake'
+          : '';
+
+  // Avatar overlap math: half of the avatar (including border) sticks above the
+  // banner's bottom edge. The rest sits cleanly in the content area, with the
+  // name on its own row below — no clipping into the banner.
+  const totalAvatar = AVATAR_SIZE + AVATAR_BORDER * 2;
+  const avatarLift = Math.round(totalAvatar / 2);
+  const nameTopGap = 12;
 
   return (
     <motion.div
@@ -57,10 +69,12 @@ export default function SleekLayout({ config }: { config: ProfileConfig }) {
         layout
         className={cn('relative overflow-visible', effectClass)}
         style={{
-          background: `rgba(10, 10, 20, ${config.boxOpacity ?? 0.7})`,
+          background: `rgba(10, 0, 0, ${config.boxOpacity ?? 0.7})`,
           backdropFilter: `blur(${config.boxBlur ?? 14}px)`,
           WebkitBackdropFilter: `blur(${config.boxBlur ?? 14}px)`,
-          border: `${config.layoutSettings?.borderWidth ?? 1}px solid ${config.layoutSettings?.borderColor ?? `rgba(${rgb}, 0.22)`}`,
+          border: `${config.layoutSettings?.borderWidth ?? 1}px solid ${
+            config.layoutSettings?.borderColor ?? `rgba(${rgb}, 0.22)`
+          }`,
           borderRadius: config.layoutSettings?.borderRadius ?? 20,
           boxShadow:
             config.glow?.enabled !== false
@@ -72,57 +86,71 @@ export default function SleekLayout({ config }: { config: ProfileConfig }) {
           color: colors.text,
         }}
       >
+        {/* Banner — base layer */}
         <div
           className="relative w-full overflow-hidden"
           style={{
-            height: 140,
+            height: BANNER_HEIGHT,
             borderTopLeftRadius: (config.layoutSettings?.borderRadius ?? 20) - 1,
             borderTopRightRadius: (config.layoutSettings?.borderRadius ?? 20) - 1,
             borderBottom: `1px solid rgba(${rgb}, 0.18)`,
+            zIndex: 1,
           }}
         >
           <img src={banner} alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0" style={{ background: `linear-gradient(180deg, transparent 0%, rgba(10,10,20,0.6) 100%)` }} />
+          <div
+            className="absolute inset-0"
+            style={{ background: `linear-gradient(180deg, transparent 0%, rgba(10,0,0,0.6) 100%)` }}
+          />
         </div>
 
+        {/* Content area — avatar floats above banner, name + info sit clear of it */}
         <div className="px-5 pb-5">
-          <div className="flex items-end gap-3 -mt-12 sm:-mt-14">
+          {/* Row 1: avatar alone, lifted into the banner */}
+          <div
+            className="relative flex"
+            style={{ marginTop: -avatarLift, zIndex: 2 }}
+          >
             <Avatar
               src={avatar}
               alt={config.displayName}
-              size={92}
+              size={AVATAR_SIZE}
               accentColor={colors.accent}
               radius={config.layoutSettings?.avatarRadius}
-              borderColor={config.layoutSettings?.borderColor ?? `rgba(10,10,20,0.95)`}
-              borderWidth={4}
+              borderColor={config.layoutSettings?.borderColor ?? `rgba(10,0,0,0.95)`}
+              borderWidth={AVATAR_BORDER}
               verified={config.verified}
               showStatusDot={Boolean(config.showDiscordPresence && presence.data)}
               statusColor={
-                presence.data ? STATUS_COLORS[presence.data.discord_status] ?? STATUS_COLORS.offline : undefined
+                presence.data
+                  ? STATUS_COLORS[presence.data.discord_status] ?? STATUS_COLORS.offline
+                  : undefined
               }
             />
-            <div className="flex-1 min-w-0 pb-1">
-              <h1
-                className="text-[22px] sm:text-2xl font-bold leading-tight truncate"
-                style={{ fontFamily: fontVar, color: colors.text }}
+          </div>
+
+          {/* Row 2: name + pronouns/location — sits entirely below banner */}
+          <div className="relative" style={{ marginTop: nameTopGap, zIndex: 2 }}>
+            <h1
+              className="text-[24px] sm:text-[26px] font-bold leading-tight truncate"
+              style={{ fontFamily: fontVar, color: colors.text }}
+            >
+              <UsernameText text={config.displayName} effect={config.usernameEffect} />
+            </h1>
+            {(config.pronouns || config.location) && (
+              <div
+                className="flex flex-wrap items-center gap-2 text-[11px] mt-1"
+                style={{ color: 'rgba(240,240,245,0.55)' }}
               >
-                <UsernameText text={config.displayName} effect={config.usernameEffect} />
-              </h1>
-              {(config.pronouns || config.location) && (
-                <div
-                  className="flex flex-wrap items-center gap-2 text-[11px] mt-0.5"
-                  style={{ color: 'rgba(240,240,245,0.55)' }}
-                >
-                  {config.pronouns && <span>{config.pronouns}</span>}
-                  {config.pronouns && config.location && <span>·</span>}
-                  {config.location && (
-                    <span className="inline-flex items-center gap-1">
-                      <MapPin size={10} /> {config.location}
-                    </span>
-                  )}
-                </div>
-              )}
-            </div>
+                {config.pronouns && <span>{config.pronouns}</span>}
+                {config.pronouns && config.location && <span>·</span>}
+                {config.location && (
+                  <span className="inline-flex items-center gap-1">
+                    <MapPin size={10} /> {config.location}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
 
           {config.badges && config.badges.length > 0 && (

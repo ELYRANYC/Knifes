@@ -8,7 +8,14 @@ const CHARS =
 
 type Column = { y: number; speed: number; charIndices: number[]; length: number };
 
-export default function Matrix({ accentColor }: { accentColor: string }) {
+export default function Matrix({
+  accentColor,
+  color,
+}: {
+  accentColor: string;
+  /** Explicit override for the matrix glyph color. Defaults to accentColor. */
+  color?: string;
+}) {
   const ref = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -21,7 +28,7 @@ export default function Matrix({ accentColor }: { accentColor: string }) {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     let width = window.innerWidth;
     let height = window.innerHeight;
-    const rgb = hexToRgb(accentColor);
+    const rgb = hexToRgb(color ?? accentColor);
 
     const fontSize = 16;
     let columns: Column[] = [];
@@ -121,7 +128,7 @@ export default function Matrix({ accentColor }: { accentColor: string }) {
       window.removeEventListener('resize', onResize);
       document.removeEventListener('visibilitychange', onVis);
     };
-  }, [accentColor]);
+  }, [accentColor, color]);
 
   return <canvas ref={ref} className="fx-canvas" aria-hidden />;
 }

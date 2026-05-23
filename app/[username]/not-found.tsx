@@ -12,7 +12,7 @@ export default function NotFound() {
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(circle at center, rgba(0,255,102,0.06) 0%, transparent 50%)',
+              'radial-gradient(circle at center, rgba(255,0,51,0.08) 0%, transparent 50%)',
           }}
         />
         <div
@@ -36,17 +36,17 @@ export default function NotFound() {
         <motion.div
           className="text-[140px] sm:text-[180px] font-bold leading-none tracking-tighter mb-2 select-none"
           style={{
-            background: 'linear-gradient(180deg, #00ff66 0%, transparent 100%)',
+            background: 'linear-gradient(180deg, #ff0033 0%, transparent 100%)',
             WebkitBackgroundClip: 'text',
             backgroundClip: 'text',
             color: 'transparent',
-            textShadow: '0 0 40px rgba(0,255,102,0.3)',
+            textShadow: '0 0 40px rgba(255,0,51,0.4)',
           }}
           animate={{
             textShadow: [
-              '0 0 40px rgba(0,255,102,0.3)',
-              '0 0 60px rgba(0,255,102,0.5)',
-              '0 0 40px rgba(0,255,102,0.3)',
+              '0 0 40px rgba(255,0,51,0.4)',
+              '0 0 60px rgba(255,0,51,0.6)',
+              '0 0 40px rgba(255,0,51,0.4)',
             ],
           }}
           transition={{ duration: 2.4, repeat: Infinity }}
@@ -61,10 +61,10 @@ export default function NotFound() {
           href="/"
           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] font-medium transition-all"
           style={{
-            background: 'rgba(0,255,102,0.16)',
-            color: '#00ff66',
-            border: '1px solid rgba(0,255,102,0.35)',
-            boxShadow: '0 0 18px rgba(0,255,102,0.2)',
+            background: 'rgba(255,0,51,0.16)',
+            color: '#ff1f4d',
+            border: '1px solid rgba(255,0,51,0.4)',
+            boxShadow: '0 0 18px rgba(255,0,51,0.25)',
           }}
         >
           <ArrowLeft size={14} /> back to home

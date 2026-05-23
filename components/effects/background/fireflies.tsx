@@ -15,7 +15,14 @@ type Firefly = {
   r: number;
 };
 
-export default function Fireflies({ accentColor }: { accentColor: string }) {
+export default function Fireflies({
+  accentColor,
+  color,
+}: {
+  accentColor: string;
+  /** Explicit override for the firefly glow color. Defaults to accentColor. */
+  color?: string;
+}) {
   const ref = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -28,7 +35,7 @@ export default function Fireflies({ accentColor }: { accentColor: string }) {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     let width = window.innerWidth;
     let height = window.innerHeight;
-    const rgb = hexToRgb(accentColor);
+    const rgb = hexToRgb(color ?? accentColor);
 
     const resize = () => {
       width = window.innerWidth;
@@ -111,7 +118,7 @@ export default function Fireflies({ accentColor }: { accentColor: string }) {
       window.removeEventListener('resize', resize);
       document.removeEventListener('visibilitychange', onVis);
     };
-  }, [accentColor]);
+  }, [accentColor, color]);
 
   return <canvas ref={ref} className="fx-canvas" aria-hidden />;
 }
