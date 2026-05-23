@@ -6,6 +6,8 @@ import { ArrowLeft } from 'lucide-react';
 import type { ReactNode } from 'react';
 import Logo from './logo';
 
+const EASE = [0.4, 0, 0.2, 1] as const;
+
 type Props = {
   eyebrow?: string;
   title: string;
@@ -13,34 +15,26 @@ type Props = {
   children?: ReactNode;
 };
 
-export default function PlaceholderShell({ eyebrow = 'phase 2', title, description, children }: Props) {
+export default function PlaceholderShell({ eyebrow = 'Phase 2', title, description, children }: Props) {
   return (
-    <main className="relative min-h-screen flex items-center justify-center px-6 py-12 overflow-hidden">
-      {/* atmosphere */}
-      <div aria-hidden className="fixed inset-0 z-0 pointer-events-none">
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(circle at 50% 0%, rgba(255,0,51,0.12) 0%, transparent 50%), #08080a',
-          }}
-        />
-        <div
-          className="absolute inset-0 opacity-[0.05]"
-          style={{
-            backgroundImage:
-              'linear-gradient(rgba(255,0,51,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,0,51,0.6) 1px, transparent 1px)',
-            backgroundSize: '64px 64px',
-            maskImage: 'radial-gradient(ellipse at center, black 20%, transparent 70%)',
-            WebkitMaskImage: 'radial-gradient(ellipse at center, black 20%, transparent 70%)',
-          }}
-        />
-      </div>
+    <main className="relative min-h-screen flex items-center justify-center px-6 py-12 overflow-hidden" style={{ background: 'var(--bg)' }}>
+      {/* subtle neutral grid */}
+      <div
+        aria-hidden
+        className="fixed inset-0 z-0 pointer-events-none"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)',
+          backgroundSize: '72px 72px',
+          maskImage: 'radial-gradient(ellipse at center, black 15%, transparent 70%)',
+          WebkitMaskImage: 'radial-gradient(ellipse at center, black 15%, transparent 70%)',
+        }}
+      />
 
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45, ease: [0.4, 0, 0.2, 1] }}
+        transition={{ duration: 0.6, ease: EASE }}
         className="relative z-10 w-full max-w-md"
       >
         <div className="flex justify-center mb-8">
@@ -50,37 +44,18 @@ export default function PlaceholderShell({ eyebrow = 'phase 2', title, descripti
         <div
           className="rounded-3xl p-8 sm:p-10 text-center"
           style={{
-            background: 'linear-gradient(180deg, rgba(35,0,10,0.55) 0%, rgba(15,0,4,0.7) 100%)',
-            border: '1px solid rgba(255,0,51,0.28)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            boxShadow:
-              '0 0 40px rgba(255,0,51,0.2), 0 24px 50px rgba(0,0,0,0.5)',
+            background: 'var(--surface)',
+            border: '1px solid var(--hairline)',
+            boxShadow: '0 12px 40px rgba(0,0,0,0.4)',
           }}
         >
-          <div
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] uppercase tracking-[0.2em] mb-5"
-            style={{
-              background: 'rgba(255,0,51,0.1)',
-              border: '1px solid rgba(255,0,51,0.32)',
-              color: '#ff1f4d',
-            }}
-          >
-            <span
-              className="w-1.5 h-1.5 rounded-full"
-              style={{ background: '#ff0033', boxShadow: '0 0 8px #ff0033' }}
-            />
+          <div className="section-overline mb-5" style={{ fontSize: '11px' }}>
             {eyebrow}
           </div>
 
-          <h1
-            className="text-2xl sm:text-3xl font-bold text-white tracking-tight"
-            style={{ textShadow: '0 0 24px rgba(255,0,51,0.25)' }}
-          >
-            {title}
-          </h1>
+          <h1 className="display-heading text-2xl sm:text-3xl">{title}</h1>
 
-          <div className="mt-3 text-[14px] leading-relaxed" style={{ color: 'rgba(240,240,245,0.7)' }}>
+          <div className="mt-4 text-[14px]" style={{ color: 'var(--text-secondary)', lineHeight: 1.6 }}>
             {description}
           </div>
 
@@ -88,15 +63,12 @@ export default function PlaceholderShell({ eyebrow = 'phase 2', title, descripti
 
           <Link
             href="/"
-            className="mt-8 inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] font-medium transition-all"
-            style={{
-              background: 'rgba(255,0,51,0.14)',
-              color: '#ff1f4d',
-              border: '1px solid rgba(255,0,51,0.4)',
-              boxShadow: '0 0 16px rgba(255,0,51,0.2)',
-            }}
+            className="mt-8 inline-flex items-center gap-2 text-[13px] font-medium transition-colors duration-200"
+            style={{ color: 'var(--text-primary)' }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
           >
-            <ArrowLeft size={13} /> back to home
+            <ArrowLeft size={14} /> back to home
           </Link>
         </div>
       </motion.div>

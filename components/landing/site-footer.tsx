@@ -69,7 +69,7 @@ const SOCIAL_ICONS = [
 
 export default function SiteFooter() {
   return (
-    <footer className="relative px-6 pt-16 pb-8 border-t" style={{ borderColor: 'rgba(255,0,51,0.12)' }}>
+    <footer className="relative px-6 pt-16 pb-8" style={{ borderTop: '1px solid var(--hairline)', background: 'var(--bg)' }}>
       <div className="max-w-[1180px] mx-auto">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8 lg:gap-6">
           {/* brand block */}
@@ -80,23 +80,20 @@ export default function SiteFooter() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className="inline-flex items-center gap-2 self-start px-3 py-1.5 rounded-full"
-              style={{
-                background: 'rgba(35,165,90,0.1)',
-                border: '1px solid rgba(35,165,90,0.32)',
-              }}
+              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--hairline)' }}
             >
               <motion.span
-                animate={{ opacity: [0.5, 1, 0.5], scale: [1, 1.2, 1] }}
+                animate={{ opacity: [0.5, 1, 0.5] }}
                 transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                 className="w-1.5 h-1.5 rounded-full"
-                style={{ background: '#23a55a', boxShadow: '0 0 8px #23a55a' }}
+                style={{ background: 'var(--status-green)', boxShadow: '0 0 6px var(--status-green)' }}
               />
-              <span className="text-[11px] font-medium" style={{ color: '#23a55a' }}>
+              <span className="text-[11px] font-medium" style={{ color: 'var(--text-secondary)' }}>
                 System Status — Operational
               </span>
             </motion.div>
 
-            <p className="text-[13px] leading-relaxed max-w-xs" style={{ color: 'rgba(240,240,245,0.55)' }}>
+            <p className="text-[13px] max-w-xs" style={{ color: 'var(--text-secondary)', lineHeight: 1.6 }}>
               Create feature-rich, customizable and modern link-in-bio pages with knives.lol.
             </p>
 
@@ -104,31 +101,30 @@ export default function SiteFooter() {
               type="button"
               className="inline-flex items-center justify-between gap-2 max-w-[180px] px-3 py-2 rounded-lg text-[12px] transition-colors hover:bg-white/[0.04]"
               style={{
-                background: 'rgba(15,0,4,0.55)',
-                border: '1px solid rgba(255,0,51,0.18)',
-                color: 'rgba(240,240,245,0.75)',
+                background: 'var(--surface)',
+                border: '1px solid var(--hairline)',
+                color: 'var(--text-secondary)',
               }}
             >
               <span>🇺🇸 English (US)</span>
-              <ChevronDown size={12} style={{ color: '#ff1f4d' }} />
+              <ChevronDown size={12} style={{ color: 'var(--text-tertiary)' }} />
             </button>
           </div>
 
           {COLUMNS.map((col) => (
             <div key={col.title}>
-              <div
-                className="text-[11px] font-semibold uppercase tracking-[0.18em] mb-3"
-                style={{ color: '#ff1f4d' }}
-              >
+              <div className="section-overline mb-3" style={{ fontSize: '11px' }}>
                 {col.title}
               </div>
-              <ul className="flex flex-col gap-2">
+              <ul className="flex flex-col gap-2.5">
                 {col.links.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-[13px] transition-colors hover:text-white"
-                      style={{ color: 'rgba(240,240,245,0.55)' }}
+                      className="text-[13px] transition-colors duration-200"
+                      style={{ color: 'var(--text-secondary)' }}
+                      onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-secondary)')}
                     >
                       {link.label}
                     </Link>
@@ -140,10 +136,10 @@ export default function SiteFooter() {
         </div>
 
         <div
-          className="mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4"
-          style={{ borderTop: '1px solid rgba(255,0,51,0.1)' }}
+          className="mt-14 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4"
+          style={{ borderTop: '1px solid var(--hairline)' }}
         >
-          <div className="text-[12px]" style={{ color: 'rgba(240,240,245,0.4)' }}>
+          <div className="text-[12px]" style={{ color: 'var(--text-tertiary)' }}>
             Copyright © 2026 knives.lol — All Rights Reserved.
           </div>
           <div className="flex items-center gap-2">
@@ -152,22 +148,14 @@ export default function SiteFooter() {
                 key={s.label}
                 href={s.href}
                 aria-label={s.label}
-                className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:scale-110"
+                className="w-9 h-9 rounded-full flex items-center justify-center transition-colors duration-200"
                 style={{
-                  background: 'rgba(20,0,6,0.6)',
-                  border: '1px solid rgba(255,0,51,0.2)',
-                  color: 'rgba(240,240,245,0.65)',
+                  background: 'var(--surface)',
+                  border: '1px solid var(--hairline)',
+                  color: 'var(--text-tertiary)',
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = '#ff1f4d';
-                  e.currentTarget.style.borderColor = 'rgba(255,0,51,0.55)';
-                  e.currentTarget.style.boxShadow = '0 0 12px rgba(255,0,51,0.3)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = 'rgba(240,240,245,0.65)';
-                  e.currentTarget.style.borderColor = 'rgba(255,0,51,0.2)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-tertiary)')}
               >
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden>
                   <path d={s.svg} />

@@ -61,7 +61,7 @@ export const metadata: Metadata = {
         url:
           'data:image/svg+xml,' +
           encodeURIComponent(
-            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="6" fill="%230a0000"/><path d="M8 22 L20 10 L24 14 L12 26 Z" fill="%23ff0033"/></svg>',
+            '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="%23000000"/><path d="M8 22 L20 10 L24 14 L12 26 Z" fill="%23f5f5f7"/></svg>',
           ),
       },
     ],
@@ -69,7 +69,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0a0000',
+  themeColor: '#000000',
   width: 'device-width',
   initialScale: 1,
 };

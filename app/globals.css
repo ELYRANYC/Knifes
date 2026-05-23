@@ -3,16 +3,29 @@
 @tailwind utilities;
 
 :root {
-  --bg: #0a0000;
-  --bg-deep: #08080a;
-  --bg-soft: #0d0306;
-  --text: #f0f0f5;
-  --text-secondary: rgba(240, 240, 245, 0.6);
-  --text-muted: rgba(240, 240, 245, 0.4);
-  --accent: #ff0033;
-  --accent-rgb: 255, 0, 51;
-  --border: rgba(255, 255, 255, 0.08);
-  --border-bright: rgba(255, 255, 255, 0.14);
+  /* ---- Apple-style site system (landing chrome + shared UI) ---- */
+  --bg: #000000;
+  --surface: #0a0a0a;
+  --surface-elevated: #141414;
+  --hairline: rgba(255, 255, 255, 0.08);
+  --hairline-strong: rgba(255, 255, 255, 0.14);
+
+  --text-primary: #f5f5f7;
+  --text-secondary: #a1a1a6;
+  --text-tertiary: #6e6e73;
+
+  --accent-red: #ff453a;
+  --accent-red-hover: #ff5e54;
+  --status-green: #30d158;
+
+  /* ---- Per-profile theming defaults (overridden at runtime by the
+         profile renderer; keep these so profile-internal classes work) ---- */
+  --text: var(--text-primary);
+  --text-muted: var(--text-tertiary);
+  --accent: #ff453a;
+  --accent-rgb: 255, 69, 58;
+  --border: var(--hairline);
+  --border-bright: var(--hairline-strong);
 }
 
 * {
@@ -35,12 +48,70 @@ body {
 }
 
 body {
-  background: radial-gradient(ellipse at 50% -20%, rgba(var(--accent-rgb), 0.06) 0%, transparent 60%), var(--bg);
+  background: var(--bg);
+  letter-spacing: -0.005em;
 }
 
 ::selection {
-  background: rgba(var(--accent-rgb), 0.4);
-  color: var(--text);
+  background: rgba(255, 69, 58, 0.32);
+  color: var(--text-primary);
+}
+
+/* ---- Shared site primitives (Apple-restrained) ---- */
+.section-overline {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.display-heading {
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.06;
+  color: var(--text-primary);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 9999px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  transition:
+    background-color 200ms ease,
+    border-color 200ms ease,
+    color 200ms ease;
+  cursor: pointer;
+}
+.btn-primary {
+  background: var(--accent-red);
+  color: #fff;
+  border: 1px solid transparent;
+}
+.btn-primary:hover {
+  background: var(--accent-red-hover);
+}
+.btn-secondary {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.btn-tertiary {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid transparent;
+}
+.btn-tertiary:hover {
+  color: var(--text-secondary);
 }
 
 ::-webkit-scrollbar {

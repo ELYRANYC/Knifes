@@ -20,20 +20,17 @@ export default function Logo({ size = 'md', href = '/', className, showIcon = tr
   const content = (
     <span
       className={cn('inline-flex items-center gap-2 select-none', className)}
-      style={{ fontWeight: 700, letterSpacing: '-0.02em', color: '#fff' }}
+      style={{ fontWeight: 600, letterSpacing: '-0.02em', color: 'var(--text-primary)' }}
     >
       {showIcon && (
         <Slice
           size={s.icon}
-          strokeWidth={2.4}
-          style={{
-            color: '#ff0033',
-            filter: 'drop-shadow(0 0 6px rgba(255,0,51,0.7))',
-          }}
+          strokeWidth={2.2}
+          style={{ color: 'var(--text-primary)', opacity: 0.85 }}
         />
       )}
-      <span className={s.text} style={{ textShadow: '0 0 14px rgba(255,0,51,0.28)' }}>
-        knives<span style={{ color: '#ff0033', textShadow: '0 0 12px #ff0033' }}>.lol</span>
+      <span className={s.text}>
+        knives<span style={{ color: 'var(--text-tertiary)' }}>.lol</span>
       </span>
     </span>
   );

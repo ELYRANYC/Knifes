@@ -19,9 +19,8 @@ export default function SignupPage({ searchParams }: { searchParams: SearchParam
         description={
           <>
             You wanted{' '}
-            <strong style={{ color: '#fff' }}>
-              knives.lol/
-              <span style={{ color: '#ff1f4d' }}>{requested}</span>
+            <strong style={{ color: 'var(--text-primary)' }}>
+              knives.lol/{requested}
             </strong>
             . We&apos;ll save your spot when signups open.
           </>
@@ -30,15 +29,17 @@ export default function SignupPage({ searchParams }: { searchParams: SearchParam
         <div
           className="px-4 py-3 rounded-xl text-[13px] text-left"
           style={{
-            background: 'rgba(255,0,51,0.08)',
-            border: '1px solid rgba(255,0,51,0.28)',
-            color: 'rgba(240,240,245,0.8)',
+            background: 'rgba(255,255,255,0.04)',
+            border: '1px solid var(--hairline)',
+            color: 'var(--text-secondary)',
           }}
         >
-          <div className="text-[10px] uppercase tracking-wider font-semibold mb-1" style={{ color: '#ff1f4d' }}>
-            reserved name
+          <div className="section-overline mb-1.5" style={{ fontSize: '10px' }}>
+            Reserved name
           </div>
-          <code className="font-mono">knives.lol/{requested}</code>
+          <code className="font-mono" style={{ color: 'var(--text-primary)' }}>
+            knives.lol/{requested}
+          </code>
         </div>
       </PlaceholderShell>
     );

@@ -8,52 +8,39 @@ import ProfilePreviewCard from './profile-preview-card';
 const ANGLES = [-12, -4, 4, 12];
 const Y_OFFSETS = [24, -4, -4, 24];
 const Z_INDEX = [1, 3, 3, 1];
+const EASE = [0.4, 0, 0.2, 1] as const;
 
 export default function ProductShowcase({ profiles }: { profiles: ProfileConfig[] }) {
   const cards = profiles.slice(0, 4);
   const [unfanned, setUnfanned] = useState(false);
 
   return (
-    <section className="relative px-4 sm:px-6 py-12 sm:py-20 overflow-hidden">
-      <div
-        aria-hidden
-        className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[1200px] h-[600px] rounded-full pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(ellipse, rgba(255,0,51,0.12) 0%, rgba(255,0,51,0.04) 30%, transparent 65%)',
-          filter: 'blur(8px)',
-        }}
-      />
-
+    <section className="relative px-4 sm:px-6 py-24 sm:py-32 overflow-hidden">
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-100px' }}
-        transition={{ duration: 0.5 }}
-        className="text-center mb-10 sm:mb-14 relative"
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.6, ease: EASE }}
+        className="text-center mb-12 sm:mb-16 relative"
       >
-        <div className="text-[11px] uppercase tracking-[0.24em] mb-3" style={{ color: '#ff1f4d' }}>
-          live previews
-        </div>
-        <h2
-          className="text-3xl sm:text-5xl font-bold text-white tracking-tight"
-          style={{ textShadow: '0 0 30px rgba(255,0,51,0.18)' }}
+        <div className="section-overline mb-4">Live Previews</div>
+        <h2 className="display-heading text-3xl sm:text-5xl">Built for the underground.</h2>
+        <p
+          className="mt-4 text-[15px] sm:text-[16px] max-w-md mx-auto"
+          style={{ color: 'var(--text-secondary)', lineHeight: 1.55 }}
         >
-          Built for the underground.
-        </h2>
-        <p className="mt-3 text-[14px] sm:text-[15px] max-w-md mx-auto" style={{ color: 'rgba(240,240,245,0.6)' }}>
           Four working personas. Four layouts. Same configuration system.
         </p>
       </motion.div>
 
       {/* Desktop fan */}
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-100px' }}
-        transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.7, ease: EASE }}
         className="hidden md:flex relative justify-center items-center min-h-[640px]"
-        style={{ perspective: '1500px' }}
+        style={{ perspective: '1600px' }}
         onMouseEnter={() => setUnfanned(true)}
         onMouseLeave={() => setUnfanned(false)}
       >
@@ -82,11 +69,11 @@ export default function ProductShowcase({ profiles }: { profiles: ProfileConfig[
 
       {/* Mobile stack */}
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-50px' }}
-        transition={{ duration: 0.6 }}
-        className="md:hidden relative flex flex-col items-center gap-12"
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ duration: 0.6, ease: EASE }}
+        className="md:hidden relative flex flex-col items-center gap-14"
       >
         {cards.map((p, i) => (
           <div key={p.username} style={{ transform: `rotate(${i % 2 === 0 ? -3 : 3}deg)` }}>

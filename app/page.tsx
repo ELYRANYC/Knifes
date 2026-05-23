@@ -15,16 +15,8 @@ export default function Home() {
 
   return (
     <main className="relative min-h-screen w-full overflow-x-hidden">
-      {/* Global page atmosphere */}
-      <div aria-hidden className="fixed inset-0 z-0 pointer-events-none">
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'radial-gradient(circle at 50% 0%, rgba(255,0,51,0.1) 0%, transparent 50%), radial-gradient(circle at 100% 100%, rgba(139,0,0,0.08) 0%, transparent 50%), #08080a',
-          }}
-        />
-      </div>
+      {/* Pure black canvas */}
+      <div aria-hidden className="fixed inset-0 z-0 pointer-events-none" style={{ background: '#000000' }} />
 
       <div className="relative z-10">
         <TopNav />

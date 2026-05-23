@@ -17,7 +17,7 @@ export default function HelpPage() {
           via Discord or{' '}
           <a
             href="mailto:support@knives.lol"
-            style={{ color: '#ff1f4d' }}
+            style={{ color: 'var(--text-primary)' }}
             className="hover:underline"
           >
             support@knives.lol

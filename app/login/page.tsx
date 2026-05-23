@@ -6,6 +6,17 @@ export const metadata: Metadata = {
   description: 'Login coming in Phase 2',
 };
 
+function Code({ children }: { children: React.ReactNode }) {
+  return (
+    <code
+      className="font-mono px-1.5 py-0.5 rounded"
+      style={{ background: 'rgba(255,255,255,0.06)', color: 'var(--text-primary)' }}
+    >
+      {children}
+    </code>
+  );
+}
+
 export default function LoginPage() {
   return (
     <PlaceholderShell
@@ -13,23 +24,8 @@ export default function LoginPage() {
       description={
         <>
           Accounts and auth land in the next release. For now, all four demo
-          profiles are pre-baked into the build and live at{' '}
-          <code className="font-mono px-1.5 py-0.5 rounded" style={{ background: 'rgba(255,0,51,0.12)', color: '#ff1f4d' }}>
-            /alex
-          </code>
-          ,{' '}
-          <code className="font-mono px-1.5 py-0.5 rounded" style={{ background: 'rgba(255,0,51,0.12)', color: '#ff1f4d' }}>
-            /luna
-          </code>
-          ,{' '}
-          <code className="font-mono px-1.5 py-0.5 rounded" style={{ background: 'rgba(255,0,51,0.12)', color: '#ff1f4d' }}>
-            /void
-          </code>
-          ,{' '}
-          <code className="font-mono px-1.5 py-0.5 rounded" style={{ background: 'rgba(255,0,51,0.12)', color: '#ff1f4d' }}>
-            /jordan
-          </code>
-          .
+          profiles are pre-baked into the build and live at <Code>/alex</Code>,{' '}
+          <Code>/luna</Code>, <Code>/void</Code>, and <Code>/jordan</Code>.
         </>
       }
     />

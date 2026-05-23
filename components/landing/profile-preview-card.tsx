@@ -8,17 +8,17 @@ import { fontVarFromKey, hexToRgb } from '@/lib/utils';
 
 const EFFECT_HINTS: Record<string, string> = {
   matrix:
-    'repeating-linear-gradient(180deg, rgba(255,0,51,0.18) 0%, transparent 6px, transparent 18px), radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%)',
+    'repeating-linear-gradient(180deg, rgba(255,69,58,0.16) 0%, transparent 6px, transparent 18px), radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%)',
   fireflies:
-    'radial-gradient(circle at 20% 30%, rgba(255,61,110,0.35) 0%, transparent 16%), radial-gradient(circle at 75% 60%, rgba(255,61,110,0.3) 0%, transparent 18%), radial-gradient(circle at 50% 85%, rgba(255,102,128,0.25) 0%, transparent 14%)',
+    'radial-gradient(circle at 20% 30%, rgba(255,61,110,0.32) 0%, transparent 16%), radial-gradient(circle at 75% 60%, rgba(255,61,110,0.28) 0%, transparent 18%), radial-gradient(circle at 50% 85%, rgba(255,102,128,0.22) 0%, transparent 14%)',
   particles:
-    'radial-gradient(circle at 30% 25%, rgba(255,0,51,0.18) 0%, transparent 10%), radial-gradient(circle at 70% 70%, rgba(255,51,85,0.18) 0%, transparent 12%), radial-gradient(circle at 50% 50%, rgba(255,0,51,0.1) 0%, transparent 20%)',
+    'radial-gradient(circle at 30% 25%, rgba(255,69,58,0.16) 0%, transparent 10%), radial-gradient(circle at 70% 70%, rgba(255,69,58,0.16) 0%, transparent 12%), radial-gradient(circle at 50% 50%, rgba(255,69,58,0.08) 0%, transparent 20%)',
   stars:
     'radial-gradient(circle at 20% 20%, rgba(255,255,255,0.5) 0%, transparent 1%), radial-gradient(circle at 70% 40%, rgba(255,255,255,0.4) 0%, transparent 1%), radial-gradient(circle at 50% 70%, rgba(255,255,255,0.45) 0%, transparent 1%), radial-gradient(circle at 80% 80%, rgba(255,255,255,0.4) 0%, transparent 1%)',
   snow: 'radial-gradient(circle at 25% 30%, rgba(255,255,255,0.4) 0%, transparent 1.5%), radial-gradient(circle at 60% 55%, rgba(255,255,255,0.45) 0%, transparent 1.5%), radial-gradient(circle at 80% 85%, rgba(255,255,255,0.35) 0%, transparent 1.5%)',
-  rain: 'repeating-linear-gradient(160deg, rgba(180,200,255,0.18) 0%, transparent 3px, transparent 16px)',
+  rain: 'repeating-linear-gradient(160deg, rgba(180,200,255,0.16) 0%, transparent 3px, transparent 16px)',
   bubbles:
-    'radial-gradient(circle at 25% 80%, rgba(255,0,51,0.18) 0%, transparent 6%), radial-gradient(circle at 70% 50%, rgba(255,0,51,0.15) 0%, transparent 7%)',
+    'radial-gradient(circle at 25% 80%, rgba(255,69,58,0.16) 0%, transparent 6%), radial-gradient(circle at 70% 50%, rgba(255,69,58,0.13) 0%, transparent 7%)',
 };
 
 export default function ProfilePreviewCard({
@@ -41,26 +41,26 @@ export default function ProfilePreviewCard({
       : config.background.value;
 
   const hint = config.backgroundEffect ? EFFECT_HINTS[config.backgroundEffect] : undefined;
-  const displayName = config.displayName;
 
   return (
     <motion.div
       className={className}
       style={style}
-      whileHover={{ scale: 1.04, y: -6 }}
-      transition={{ type: 'spring', stiffness: 180, damping: 18 }}
+      whileHover={{ y: -6 }}
+      transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
     >
       <Link
         href={`/${config.username}`}
         className="block relative"
         aria-label={`Open ${config.displayName} profile`}
       >
-        {/* phone bezel */}
+        {/* phone bezel — neutral */}
         <div
           className="relative rounded-[36px] p-[3px]"
           style={{
-            background: 'linear-gradient(180deg, rgba(255,0,51,0.45) 0%, rgba(50,0,10,0.85) 35%, rgba(15,0,4,1) 100%)',
-            boxShadow: `0 30px 60px rgba(0,0,0,0.55), 0 0 40px rgba(${rgb}, 0.22)`,
+            background: 'linear-gradient(180deg, #2a2a2a 0%, #0a0a0a 60%, #050505 100%)',
+            border: '1px solid var(--hairline)',
+            boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
           }}
         >
           {/* notch */}
@@ -69,12 +69,11 @@ export default function ProfilePreviewCard({
             style={{ background: '#000' }}
           />
 
-          {/* inner screen */}
+          {/* inner screen — shows the real (red-themed) profile content */}
           <div
             className="relative w-[260px] sm:w-[280px] h-[480px] sm:h-[520px] rounded-[33px] overflow-hidden"
             style={{ background: bgValue, fontFamily: fontVar, color: colors.text }}
           >
-            {/* background effect hint */}
             {hint && (
               <div
                 aria-hidden
@@ -83,34 +82,33 @@ export default function ProfilePreviewCard({
               />
             )}
 
-            {/* top accent gradient */}
             <div
               aria-hidden
               className="absolute inset-x-0 top-0 h-24 pointer-events-none"
               style={{
-                background: `radial-gradient(ellipse at 50% 0%, rgba(${rgb}, 0.35) 0%, transparent 70%)`,
+                background: `radial-gradient(ellipse at 50% 0%, rgba(${rgb}, 0.3) 0%, transparent 70%)`,
               }}
             />
 
-            {/* status pill */}
-            <div className="absolute top-3 right-3 flex items-center gap-1.5 text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full"
+            {/* layout label — neutral frame chrome */}
+            <div
+              className="absolute top-3 right-3 flex items-center gap-1.5 text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full"
               style={{
-                background: 'rgba(10,0,0,0.6)',
-                border: `1px solid rgba(${rgb}, 0.4)`,
-                color: colors.accent,
+                background: 'rgba(10,10,10,0.7)',
+                border: '1px solid var(--hairline-strong)',
+                color: 'rgba(255,255,255,0.7)',
                 backdropFilter: 'blur(6px)',
               }}
             >
               {config.layout}
             </div>
 
-            {/* content */}
             <div className="relative h-full flex flex-col items-center px-5 pt-14 pb-5">
               <div
                 className="w-[72px] h-[72px] rounded-full overflow-hidden flex-shrink-0"
                 style={{
                   border: `2px solid ${colors.accent}`,
-                  boxShadow: `0 0 18px rgba(${rgb}, 0.55)`,
+                  boxShadow: `0 0 18px rgba(${rgb}, 0.5)`,
                 }}
               >
                 <img src={config.avatar} alt="" className="w-full h-full object-cover" />
@@ -118,16 +116,15 @@ export default function ProfilePreviewCard({
 
               <div
                 className="mt-3 text-[18px] font-bold text-center leading-tight"
-                style={{
-                  color: colors.text,
-                  textShadow: `0 0 12px rgba(${rgb}, 0.5)`,
-                  fontFamily: fontVar,
-                }}
+                style={{ color: colors.text, textShadow: `0 0 12px rgba(${rgb}, 0.5)`, fontFamily: fontVar }}
               >
-                {displayName}
+                {config.displayName}
               </div>
 
-              <div className="mt-1 text-[10px] text-center px-2 line-clamp-2" style={{ color: colors.secondary ?? 'rgba(240,240,245,0.6)' }}>
+              <div
+                className="mt-1 text-[10px] text-center px-2 line-clamp-2"
+                style={{ color: colors.secondary ?? 'rgba(240,240,245,0.6)' }}
+              >
                 {Array.isArray(config.description) ? (config.description[0] ?? '') : config.description}
               </div>
 
@@ -164,10 +161,7 @@ export default function ProfilePreviewCard({
                       className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0"
                       style={{ background: `rgba(${rgb}, 0.2)` }}
                     >
-                      <span
-                        className="w-1.5 h-1.5 rounded-full"
-                        style={{ background: colors.accent }}
-                      />
+                      <span className="w-1.5 h-1.5 rounded-full" style={{ background: colors.accent }} />
                     </span>
                     <span className="flex-1 truncate font-medium">{link.label ?? link.platform}</span>
                     <ExternalLink size={9} style={{ color: colors.accent, opacity: 0.6 }} />
@@ -175,32 +169,19 @@ export default function ProfilePreviewCard({
                 ))}
               </div>
 
-              {/* dock indicator */}
               <div className="mt-3 w-20 h-[3px] rounded-full" style={{ background: 'rgba(255,255,255,0.2)' }} />
             </div>
 
-            {/* glass reflection at top */}
             <div
               aria-hidden
               className="absolute inset-x-0 top-0 h-1/3 pointer-events-none"
               style={{
-                background:
-                  'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 60%)',
+                background: 'linear-gradient(180deg, rgba(255,255,255,0.06) 0%, transparent 60%)',
                 mixBlendMode: 'overlay',
               }}
             />
           </div>
         </div>
-
-        {/* ground shadow */}
-        <div
-          aria-hidden
-          className="absolute left-1/2 -translate-x-1/2 -bottom-8 w-[70%] h-10 rounded-full pointer-events-none"
-          style={{
-            background: `radial-gradient(ellipse, rgba(${rgb}, 0.4) 0%, transparent 70%)`,
-            filter: 'blur(18px)',
-          }}
-        />
       </Link>
     </motion.div>
   );

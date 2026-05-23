@@ -5,34 +5,44 @@ import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import type { ProfileConfig } from '@/lib/types';
 
-const ACCENT = '#ff0033';
-const ACCENT_BRIGHT = '#ff1f4d';
+const EASE = [0.4, 0, 0.2, 1] as const;
+
+function Chip({ children }: { children: React.ReactNode }) {
+  return (
+    <span
+      className="px-2 py-0.5 rounded-md text-[10px] font-medium"
+      style={{
+        background: 'rgba(255,255,255,0.06)',
+        border: '1px solid var(--hairline)',
+        color: 'var(--text-secondary)',
+      }}
+    >
+      {children}
+    </span>
+  );
+}
 
 export default function ProfileDirectory({ profiles }: { profiles: ProfileConfig[] }) {
   return (
-    <section id="leaderboard-section" className="relative px-6 py-20 sm:py-24">
+    <section id="leaderboard-section" className="relative px-6 py-24 sm:py-32">
       <div className="max-w-[1180px] mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 10 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4 }}
-          className="mb-8 flex items-end justify-between flex-wrap gap-4"
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.6, ease: EASE }}
+          className="mb-10 flex items-end justify-between flex-wrap gap-4"
         >
           <div>
-            <div className="text-[11px] uppercase tracking-[0.22em]" style={{ color: ACCENT_BRIGHT }}>
-              profile directory
-            </div>
-            <h2
-              className="text-2xl sm:text-3xl font-bold mt-2 text-white tracking-tight"
-              style={{ textShadow: '0 0 24px rgba(255,0,51,0.15)' }}
-            >
-              Four personas, four layouts.
-            </h2>
+            <div className="section-overline mb-3">Profile Directory</div>
+            <h2 className="display-heading text-2xl sm:text-4xl">Four personas, four layouts.</h2>
           </div>
-          <div className="text-[12px]" style={{ color: 'rgba(240,240,245,0.45)' }}>
+          <div className="text-[13px]" style={{ color: 'var(--text-tertiary)' }}>
             each one is a single typescript file in{' '}
-            <code className="font-mono px-1.5 py-0.5 rounded" style={{ background: 'rgba(255,0,51,0.1)', color: ACCENT_BRIGHT }}>
+            <code
+              className="font-mono px-1.5 py-0.5 rounded"
+              style={{ background: 'rgba(255,255,255,0.06)', color: 'var(--text-secondary)' }}
+            >
               /profiles
             </code>
           </div>
@@ -42,90 +52,63 @@ export default function ProfileDirectory({ profiles }: { profiles: ProfileConfig
           {profiles.map((p, i) => (
             <motion.div
               key={p.username}
-              initial={{ opacity: 0, y: 14 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ delay: i * 0.06, duration: 0.4 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ delay: i * 0.06, duration: 0.55, ease: EASE }}
             >
               <Link
                 href={`/${p.username}`}
-                className="group block p-5 sm:p-6 rounded-2xl transition-all hover:-translate-y-1"
+                className="group block p-5 sm:p-6 rounded-2xl"
                 style={{
-                  background: 'rgba(15,0,4,0.55)',
-                  border: `1px solid ${p.colors.accent}33`,
-                  backdropFilter: 'blur(14px)',
-                  WebkitBackdropFilter: 'blur(14px)',
-                  boxShadow: `0 0 0 1px ${p.colors.accent}11, 0 12px 30px rgba(0,0,0,0.4)`,
+                  background: 'var(--surface)',
+                  border: '1px solid var(--hairline)',
+                  transition: 'background-color 300ms ease, border-color 300ms ease',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = `0 0 24px ${p.colors.accent}55, 0 0 0 1px ${p.colors.accent}66, 0 18px 40px rgba(0,0,0,0.5)`;
-                  e.currentTarget.style.borderColor = `${p.colors.accent}88`;
+                  e.currentTarget.style.background = 'var(--surface-elevated)';
+                  e.currentTarget.style.borderColor = 'var(--hairline-strong)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = `0 0 0 1px ${p.colors.accent}11, 0 12px 30px rgba(0,0,0,0.4)`;
-                  e.currentTarget.style.borderColor = `${p.colors.accent}33`;
+                  e.currentTarget.style.background = 'var(--surface)';
+                  e.currentTarget.style.borderColor = 'var(--hairline)';
                 }}
               >
                 <div className="flex items-center gap-4">
                   <img
                     src={p.avatar}
                     alt={p.displayName}
-                    className="w-16 h-16 rounded-2xl object-cover flex-shrink-0 transition-transform group-hover:scale-105"
-                    style={{
-                      border: `2px solid ${p.colors.accent}`,
-                      boxShadow: `0 0 14px ${p.colors.accent}66`,
-                    }}
+                    className="w-16 h-16 rounded-2xl object-cover flex-shrink-0"
+                    style={{ border: '1px solid var(--hairline)' }}
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-[17px] font-semibold truncate" style={{ color: p.colors.text }}>
+                      <span className="text-[17px] font-semibold truncate" style={{ color: 'var(--text-primary)' }}>
                         {p.displayName}
                       </span>
                       <span
-                        className="text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider font-medium"
+                        className="px-2 py-0.5 rounded-md text-[10px] font-medium uppercase tracking-wider"
                         style={{
-                          background: `${ACCENT}1f`,
-                          color: ACCENT_BRIGHT,
-                          border: `1px solid ${ACCENT}55`,
+                          background: 'rgba(255,255,255,0.06)',
+                          border: '1px solid var(--hairline)',
+                          color: 'var(--text-secondary)',
                         }}
                       >
                         {p.layout}
                       </span>
                     </div>
-                    <div className="text-[12.5px] truncate mt-1" style={{ color: 'rgba(240,240,245,0.6)' }}>
+                    <div className="text-[13px] truncate mt-1" style={{ color: 'var(--text-secondary)' }}>
                       {Array.isArray(p.description) ? (p.description[0] ?? '') : p.description}
                     </div>
-                    <div className="flex items-center gap-1.5 mt-2.5 text-[10px] flex-wrap" style={{ color: ACCENT_BRIGHT }}>
-                      {p.backgroundEffect && p.backgroundEffect !== 'none' && (
-                        <span
-                          className="px-1.5 py-0.5 rounded font-medium"
-                          style={{ background: 'rgba(255,0,51,0.08)', border: '1px solid rgba(255,0,51,0.22)' }}
-                        >
-                          {p.backgroundEffect}
-                        </span>
-                      )}
-                      {p.cursorEffect && p.cursorEffect !== 'none' && (
-                        <span
-                          className="px-1.5 py-0.5 rounded font-medium"
-                          style={{ background: 'rgba(255,0,51,0.08)', border: '1px solid rgba(255,0,51,0.22)' }}
-                        >
-                          {p.cursorEffect} cursor
-                        </span>
-                      )}
-                      {p.audio && p.audio.length > 0 && (
-                        <span
-                          className="px-1.5 py-0.5 rounded font-medium"
-                          style={{ background: 'rgba(255,0,51,0.08)', border: '1px solid rgba(255,0,51,0.22)' }}
-                        >
-                          audio
-                        </span>
-                      )}
+                    <div className="flex items-center gap-1.5 mt-2.5 flex-wrap">
+                      {p.backgroundEffect && p.backgroundEffect !== 'none' && <Chip>{p.backgroundEffect}</Chip>}
+                      {p.cursorEffect && p.cursorEffect !== 'none' && <Chip>{p.cursorEffect} cursor</Chip>}
+                      {p.audio && p.audio.length > 0 && <Chip>audio</Chip>}
                     </div>
                   </div>
                   <ArrowRight
                     size={18}
-                    className="transition-transform group-hover:translate-x-0.5"
-                    style={{ color: ACCENT_BRIGHT }}
+                    className="transition-all duration-300 group-hover:translate-x-0.5 text-[#a1a1a6] group-hover:text-[#f5f5f7]"
                   />
                 </div>
               </Link>

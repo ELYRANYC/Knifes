@@ -7,6 +7,7 @@ import { ArrowRight } from 'lucide-react';
 export default function ClaimInput({ compact }: { compact?: boolean }) {
   const router = useRouter();
   const [value, setValue] = useState('');
+  const [focused, setFocused] = useState(false);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,24 +20,16 @@ export default function ClaimInput({ compact }: { compact?: boolean }) {
       onSubmit={onSubmit}
       className="relative flex w-full max-w-md mx-auto items-stretch rounded-full overflow-hidden"
       style={{
-        background: 'rgba(10, 0, 0, 0.7)',
-        border: '1px solid rgba(255,0,51,0.28)',
-        boxShadow: '0 0 0 0 rgba(255,0,51,0)',
-        transition: 'box-shadow 250ms, border-color 250ms',
-      }}
-      onFocusCapture={(e) => {
-        e.currentTarget.style.borderColor = 'rgba(255,0,51,0.6)';
-        e.currentTarget.style.boxShadow = '0 0 0 4px rgba(255,0,51,0.12), 0 0 24px rgba(255,0,51,0.3)';
-      }}
-      onBlurCapture={(e) => {
-        e.currentTarget.style.borderColor = 'rgba(255,0,51,0.28)';
-        e.currentTarget.style.boxShadow = '0 0 0 0 rgba(255,0,51,0)';
+        background: 'rgba(255,255,255,0.04)',
+        border: `1px solid ${focused ? 'rgba(255,255,255,0.2)' : 'var(--hairline)'}`,
+        transition: 'border-color 200ms ease',
       }}
     >
       <span
-        className={`flex items-center pl-4 sm:pl-5 pr-1 font-mono text-white/55 ${
+        className={`flex items-center pl-4 sm:pl-5 pr-1 font-mono ${
           compact ? 'text-[12px]' : 'text-[13px] sm:text-[14px]'
         }`}
+        style={{ color: 'var(--text-tertiary)' }}
       >
         knives.lol/
       </span>
@@ -44,23 +37,21 @@ export default function ClaimInput({ compact }: { compact?: boolean }) {
         type="text"
         value={value}
         onChange={(e) => setValue(e.target.value)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
         placeholder="your-name"
         autoComplete="off"
         spellCheck={false}
-        className={`flex-1 min-w-0 bg-transparent text-white placeholder:text-white/30 outline-none ${
+        className={`flex-1 min-w-0 bg-transparent outline-none ${
           compact ? 'text-[13px] py-2.5' : 'text-[14px] py-3 sm:py-3.5'
         }`}
+        style={{ color: 'var(--text-primary)' }}
       />
       <button
         type="submit"
-        className={`inline-flex items-center gap-1.5 px-4 sm:px-5 font-medium transition-all hover:brightness-110 ${
+        className={`btn btn-primary inline-flex items-center gap-1.5 px-4 sm:px-5 rounded-none ${
           compact ? 'text-[12px]' : 'text-[13px] sm:text-[14px]'
         }`}
-        style={{
-          background: '#ff0033',
-          color: '#fff',
-          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.2), 0 0 14px rgba(255,0,51,0.4)',
-        }}
       >
         Claim Now
         <ArrowRight size={compact ? 12 : 14} />
