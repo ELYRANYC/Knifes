@@ -35,6 +35,7 @@ import {
 import { Mail, Globe, ExternalLink, Gamepad2 } from 'lucide-react';
 import type { ProfileLink } from '@/lib/types';
 import { cn, hexToRgb } from '@/lib/utils';
+import { useProfileId } from '@/lib/view-count-context';
 
 type IconMeta = { svg: string; hex: string; title: string };
 
@@ -146,9 +147,20 @@ export default function LinksGrid({
   alignment = 'left',
   variant = 'card',
 }: GridProps) {
+  const profileId = useProfileId();
   const visible = links.filter((l) => !l.hidden);
   if (!visible.length) return null;
   const rgb = hexToRgb(accentColor);
+
+  const trackClick = (platform: string, url: string) => {
+    if (!profileId) return;
+    fetch('/api/track-click', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ profileId, platform, url }),
+      keepalive: true,
+    }).catch(() => {});
+  };
 
   if (variant === 'icon-only') {
     const justify =
@@ -161,6 +173,7 @@ export default function LinksGrid({
             href={ensureHref(link.url, link.platform)}
             target="_blank"
             rel="noreferrer"
+            onClick={() => trackClick(link.platform, link.url)}
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35 + i * 0.04, duration: 0.25 }}
@@ -199,6 +212,7 @@ export default function LinksGrid({
           href={ensureHref(link.url, link.platform)}
           target={link.platform === 'email' ? undefined : '_blank'}
           rel="noreferrer"
+          onClick={() => trackClick(link.platform, link.url)}
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.35 + i * 0.05, duration: 0.3 }}

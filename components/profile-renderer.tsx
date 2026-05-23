@@ -12,12 +12,25 @@ import DefaultLayout from './profile/default-layout';
 import ModernLayout from './profile/modern-layout';
 import SimplisticLayout from './profile/simplistic-layout';
 import SleekLayout from './profile/sleek-layout';
+import { ViewCountProvider } from '@/lib/view-count-context';
 
-export default function ProfileRenderer({ config }: { config: ProfileConfig }) {
-  const [unlocked, setUnlocked] = useState(!config.entryScreen?.enabled);
+export default function ProfileRenderer({
+  config,
+  viewCount = null,
+  profileId,
+  preview = false,
+}: {
+  config: ProfileConfig;
+  viewCount?: number | null;
+  profileId?: string;
+  /** Contained dashboard preview: no global CSS mutation, cursor, audio or entry gate. */
+  preview?: boolean;
+}) {
+  const [unlocked, setUnlocked] = useState(preview ? true : !config.entryScreen?.enabled);
   const rgb = hexToRgb(config.colors.accent);
 
   useEffect(() => {
+    if (preview) return;
     document.documentElement.style.setProperty('--accent', config.colors.accent);
     document.documentElement.style.setProperty('--accent-rgb', rgb);
     document.documentElement.style.setProperty('--text', config.colors.text);
@@ -32,7 +45,7 @@ export default function ProfileRenderer({ config }: { config: ProfileConfig }) {
         document.body.style.cursor = '';
       }
     };
-  }, [config.colors.accent, config.colors.text, config.colors.secondary, config.customCursor, rgb]);
+  }, [preview, config.colors.accent, config.colors.text, config.colors.secondary, config.customCursor, rgb]);
 
   const BgEffect = useMemo(() => {
     if (!config.backgroundEffect || config.backgroundEffect === 'none') return null;
@@ -98,6 +111,7 @@ export default function ProfileRenderer({ config }: { config: ProfileConfig }) {
   const showVolume = hasAudio;
 
   return (
+    <ViewCountProvider value={viewCount} profileId={profileId ?? null}>
     <main
       className="relative min-h-screen w-full"
       style={{ background: config.colors.background }}
@@ -110,7 +124,7 @@ export default function ProfileRenderer({ config }: { config: ProfileConfig }) {
         }}
       />
       {BgEffect && <BgEffect accentColor={config.colors.accent} />}
-      {CursorEffect && unlocked && <CursorEffect accentColor={config.colors.accent} />}
+      {!preview && CursorEffect && unlocked && <CursorEffect accentColor={config.colors.accent} />}
 
       <motion.div
         initial={{ opacity: 0 }}
@@ -124,7 +138,7 @@ export default function ProfileRenderer({ config }: { config: ProfileConfig }) {
         {config.layout === 'default' && <DefaultLayout config={config} />}
       </motion.div>
 
-      {hasAudio && config.audio && (
+      {!preview && hasAudio && config.audio && (
         <AudioPlayer
           tracks={config.audio}
           autoplay={config.audioAutoplay}
@@ -133,9 +147,9 @@ export default function ProfileRenderer({ config }: { config: ProfileConfig }) {
           unlocked={unlocked}
         />
       )}
-      {showVolume && <VolumeControl accentColor={config.colors.accent} />}
+      {!preview && showVolume && <VolumeControl accentColor={config.colors.accent} />}
 
-      {config.entryScreen?.enabled && (
+      {!preview && config.entryScreen?.enabled && (
         <EntryScreen
           username={config.username}
           text={config.entryScreen.text}
@@ -144,5 +158,6 @@ export default function ProfileRenderer({ config }: { config: ProfileConfig }) {
         />
       )}
     </main>
+    </ViewCountProvider>
   );
 }

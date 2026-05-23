@@ -199,12 +199,105 @@ storage with CORS enabled. **Do not paste copyrighted audio URLs.**
 
 ---
 
-## Phase 2 preview
+## Phase 2 — Auth + Dashboard (Supabase)
 
-- Email / Discord OAuth
-- `/dashboard` to edit profiles in-browser
-- Persistence (Supabase or similar)
-- Slug claim flow + reserved usernames
+Profiles now live in Supabase Postgres. Auth (email + Discord/Google OAuth)
+and a full customization dashboard are live. Config files in `/profiles`
+remain only as a seed/import source.
+
+### 1. Environment variables
+
+Set these in Vercel (production) and `.env.local` (local dev). See
+`.env.example`:
+
+| Var | Where | Notes |
+| --- | --- | --- |
+| `NEXT_PUBLIC_SUPABASE_URL` | browser + server | Project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | browser + server | Publishable key |
+| `SUPABASE_SERVICE_ROLE_KEY` | **server only** | Account deletion, import, email-verify |
+| `NEXT_PUBLIC_SITE_URL` | both | e.g. `https://knives.lol` |
+
+### 2. Run the SQL migrations
+
+Open the Supabase **SQL Editor** and paste each file in order:
+
+```
+supabase/migrations/00001_initial.sql        — tables + indexes
+supabase/migrations/00002_rls.sql            — row-level security
+supabase/migrations/00003_reserved_usernames.sql — reserved-name seed
+supabase/migrations/00004_triggers.sql       — updated_at + username_available()
+supabase/migrations/00005_analytics.sql      — public view-count function
+```
+
+(Or apply them via the Supabase MCP server / `supabase db push` with the CLI.)
+
+### 3. Create Storage buckets
+
+In **Storage → New bucket**, create six **public** buckets. Add a policy on
+each allowing authenticated users to insert/update/delete only within their
+own `{userId}/…` folder (uploads use that path prefix):
+
+| Bucket | Max size | Types |
+| --- | --- | --- |
+| `avatars` | 5 MB | image |
+| `backgrounds` | 15 MB | image / video |
+| `audio` | 10 MB | audio |
+| `cursors` | 1 MB | image |
+| `banners` | 10 MB | image |
+| `embeds` | 5 MB | image |
+
+Example per-bucket policy (repeat per bucket, swapping the name):
+
+```sql
+create policy "own folder write" on storage.objects
+  for all to authenticated
+  using (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text)
+  with check (bucket_id = 'avatars' and (storage.foldername(name))[1] = auth.uid()::text);
+```
+
+### 4. Configure Auth
+
+- **Authentication → URL Configuration:** set Site URL to `NEXT_PUBLIC_SITE_URL`
+  and add redirect URLs:
+  `${SITE_URL}/api/auth/callback`, `${SITE_URL}/reset-password`.
+- **Email provider:** enable email confirmations (signup sends a verification
+  link to `/api/auth/callback`, which creates the profile row).
+- **OAuth (Discord + Google):** enable each provider, paste client ID/secret,
+  and set the provider callback to
+  `https://<project-ref>.supabase.co/auth/v1/callback`.
+
+### 5. Migrate the Phase 1 profiles
+
+```bash
+npm run import-profiles
+```
+
+Creates a verified auth user (random password, printed to console) per file in
+`/profiles` and inserts the matching row. Save the printed passwords.
+
+### 6. Local dev
+
+```bash
+cp .env.example .env.local   # fill in real values
+npm install
+npm run dev
+```
+
+### How it fits together
+
+- `lib/supabase/{client,server,middleware,admin}.ts` — SSR-ready clients via
+  `@supabase/ssr`. `middleware.ts` refreshes sessions and guards `/dashboard/*`.
+- `lib/profile-mapper.ts` — converts a DB row ↔ `ProfileConfig` (and back),
+  including the 0–100 ↔ 0–1 opacity/volume conversion.
+- `app/[username]/page.tsx` — resolves username → profile, falls back to
+  `aliases` (canonical redirect), maps the row, and renders the **unchanged**
+  Phase 1 layouts. `?preview=1` renders a tracking-free version for the
+  dashboard preview iframe.
+- `app/dashboard/*` — the studio. A shared `ProfileEditorProvider` holds the
+  edited config and autosaves (1s debounce) to Supabase; the live preview is an
+  iframe that reloads on each save.
+- Security is **RLS**; the service role is used only for account deletion, the
+  import script, and verifying emails.
 
 ## Phase 3 preview
 

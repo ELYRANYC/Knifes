@@ -3,6 +3,7 @@
 import { Eye } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useViewCounter } from '@/lib/use-view-counter';
+import { useViewCount } from '@/lib/view-count-context';
 import { hexToRgb } from '@/lib/utils';
 
 export default function ViewCounter({
@@ -12,7 +13,9 @@ export default function ViewCounter({
   username: string;
   accentColor: string;
 }) {
-  const views = useViewCounter(username);
+  const dbCount = useViewCount();
+  const localViews = useViewCounter(username);
+  const views = dbCount ?? localViews;
   const rgb = hexToRgb(accentColor);
   if (views === 0) return null;
   return (
